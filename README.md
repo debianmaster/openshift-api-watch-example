@@ -14,5 +14,9 @@ oapi.ns('foo').deploymentconfigs('bar').get((err, result) => {
   console.log(JSON.stringify(result, null, 2));
 });
 ```
-# openshift-api-watch-example
-# openshift-api-watch-example
+```sh
+oc adm policy add-scc-to-user anyuid -z default
+cp ~/.kube/config config
+oc create cm kubeconfig --from-file=config
+oc volume dc/watch --add  -m /root/.kube/ -t configmap --configmap-name=kubeconfig
+```
