@@ -9,7 +9,7 @@ const jsonStreamSVC = new JSONStream();
 const jsonStreamUSERS = new JSONStream();
 const jsonStreamNAMESPACES = new JSONStream();
 
-const io = require('socket.io')(8080);
+const io = require('socket.io')(8081);
 
 const oapi = new OpenShiftClient.OApi(OpenShiftClient.config.fromKubeconfig());
 const api =  new Api.Core(Api.config.fromKubeconfig());
