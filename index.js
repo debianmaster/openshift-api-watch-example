@@ -14,13 +14,20 @@ const io = require('socket.io')(8080);
 const oapi = new OpenShiftClient.OApi(OpenShiftClient.config.fromKubeconfig());
 const api =  new Api.Core(Api.config.fromKubeconfig());
 
+const asserts={
+  dc: ["welcome","time","ks","mysql","myapp","blue","bluegreen","green","scm-web-hooks"], 
+  svc: ["welcome","time","ks","mysql","myapp","blue","bluegreen","green","scm-web-hooks"],
+  route: ["welcome","time","ks","dbtest","myapp","bluegreen","scm-web-hooks"],
+  ns: ["mycliproject","myjbossapp","consoleproject","binarydeploy","bluegreen","scm-web-hooks"]
+}
+
 var scores=[];
 var nsVsusers=[];
 
-function addScore(key,val){
+function addScore(key,val,type){
 	if(key!=undefined){
 		for(k in scores){
-			if(scores[k].name==key){
+			if(scores[k].name==key && asserts[type].indexOf(val)!=-1){
 				scores[k].score+=1;
 				io.emit('message',scores);
 		    }
@@ -33,7 +40,7 @@ streamDC.pipe(jsonStreamDC);
 jsonStreamDC.on('data', object => {
   if(object.type=='ADDED'){
     console.log("DC",object.object.metadata.name)
-    addScore(nsVsusers[object.object.metadata.namespace]);
+    addScore(nsVsusers[object.object.metadata.namespace],dc);
     console.log(scores);
     
   }
@@ -79,7 +86,7 @@ streamUSERS.pipe(jsonStreamUSERS);
 jsonStreamUSERS.on('data', object => {
   if(object.type=='ADDED'){	
     console.log("User",object.object.metadata.name);
-    scores.push({name:object.object.metadata.name,score:0});
+    scores.push({name:object.object.metadata.name,score:0,trend:'neu'});
     addScore(object.object.metadata.name); 
   }
 });
