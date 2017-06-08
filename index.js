@@ -27,7 +27,7 @@ var nsVsusers=[];
 function addScore(key,val,type){
 	if(key!=undefined){
 		for(k in scores){
-			if(scores[k].name==key && asserts[type].indexOf(val)!=-1){
+			if(scores[k].name==key && asserts[type].indexof(val)!=-1){
 				scores[k].score+=1;
 				io.emit('message',scores);
 		    }
