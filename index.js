@@ -40,7 +40,7 @@ streamDC.pipe(jsonStreamDC);
 jsonStreamDC.on('data', object => {
   if(object.type=='ADDED'){
     console.log("DC",object.object.metadata.name)
-    addScore(nsVsusers[object.object.metadata.namespace],dc);
+    addScore(nsVsusers[object.object.metadata.namespace],'dc');
     console.log(scores);
     
   }
@@ -53,7 +53,7 @@ streamSVC.pipe(jsonStreamSVC);
 jsonStreamSVC.on('data', object => {
   if(object.type=='ADDED'){	
     console.log("SVC",object.object.metadata.name);
-    addScore(nsVsusers[object.object.metadata.namespace]);
+    addScore(nsVsusers[object.object.metadata.namespace],'svc');
     console.log(scores);
   }
 });
@@ -66,7 +66,7 @@ jsonStreamNAMESPACES.on('data', object => {
   	if(undefined==object.object.metadata.name) return;
   	nsVsusers[object.object.metadata.name]=object.object.metadata.annotations['openshift.io/requester'];
     console.log(nsVsusers);
-    addScore(nsVsusers[object.object.metadata.name]);
+    addScore(nsVsusers[object.object.metadata.name],'ns');
   }
 });
 
@@ -76,7 +76,7 @@ streamROUTE.pipe(jsonStreamROUTE);
 jsonStreamROUTE.on('data', object => {
   if(object.type=='ADDED'){	
     console.log("ROUTE",object.object.spec.host);
-    addScore(nsVsusers[object.object.metadata.namespace]);
+    addScore(nsVsusers[object.object.metadata.namespace],'route');
   }
 });
 
@@ -87,7 +87,7 @@ jsonStreamUSERS.on('data', object => {
   if(object.type=='ADDED'){	
     console.log("User",object.object.metadata.name);
     scores.push({name:object.object.metadata.name,score:0,trend:'neu'});
-    addScore(object.object.metadata.name); 
+    addScore(object.object.metadata.name,'users'); 
   }
 });
 
