@@ -7,19 +7,17 @@ Example using kubernetes-client to implement an OpenShift client.
 ```sh
 oc adm policy add-scc-to-user anyuid -z default
 cp ~/.kube/config config
-oc create cm kubeconfig --from-file=config
-oc volume dc/watch --add  -m /root/.kube/ -t configmap --configmap-name=kubeconfig
-
-
-oc new-app https://github.com/debianmaster/openshift-api-watch-example --name=watch
+oc new-build https://github.com/debianmaster/openshift-api-watch-example --name=watch
 oc new-build https://github.com/debianmaster/simple-scoreboard --name=dash
+oc new-app watch-img --name=watch
+
 oc patch dc watch --patch='
 { "spec": { 
     "template": {
       "spec": {
         "containers": [
           { "name" : "dash", 
-            "image": "172.30.1.1:5000/dev/dash:latest"
+            "image": "172.30.65.14:5000/ci/dash-img:latest"
           }
         ], 
         "triggers": [
@@ -27,7 +25,7 @@ oc patch dc watch --patch='
             "imageChangeParams": { 
               "from": { 
                 "kind": "ImageStreamTag",
-                "name": "dash:latest"
+                "name": "dash-img:latest"
               },
               "containerNames": [ 
                 "dashboard" 
@@ -39,4 +37,6 @@ oc patch dc watch --patch='
     }
   }
 }'
+oc create cm kubeconfig --from-file=config
+oc volume dc/watch --add  -m /root/.kube/ -t configmap --configmap-name=kubeconfig
 ```
