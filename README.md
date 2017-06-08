@@ -6,6 +6,7 @@ Example using kubernetes-client to implement an OpenShift client.
 
 ```sh
 oc adm policy add-scc-to-user anyuid -z default
+export registry=$(oc get svc docker-registry -n default  -o jsonpath='{.spec.clusterIP}')
 cp ~/.kube/config config
 oc new-build https://github.com/debianmaster/openshift-api-watch-example --name=watch
 oc new-build https://github.com/debianmaster/simple-scoreboard --name=dash
@@ -17,7 +18,7 @@ oc patch dc watch --patch='
       "spec": {
         "containers": [
           { "name" : "dash", 
-            "image": "172.30.65.14:5000/ci/dash-img:latest"
+            "image": "${registry}:5000/ci/dash-img:latest"
           }
         ], 
         "triggers": [
