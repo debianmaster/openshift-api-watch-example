@@ -11,8 +11,11 @@ const jsonStreamNAMESPACES = new JSONStream();
 
 const io = require('socket.io')(8081);
 
-const oapi = new OpenShiftClient.OApi(OpenShiftClient.config.fromKubeconfig());
-const api =  new Api.Core(Api.config.fromKubeconfig());
+//const oapi = new OpenShiftClient.OApi(OpenShiftClient.config.fromKubeconfig());
+//const api =  new Api.Core(Api.config.fromKubeconfig());
+
+const oapi = new OpenShiftClient.OApi(OpenShiftClient.config.getInCluster());
+const api =  new Api.Core(Api.config.getInCluster());
 
 const asserts={
   dc: ["welcome","time","ks","mysql","myapp","blue","bluegreen","green","scm-web-hooks"], 
