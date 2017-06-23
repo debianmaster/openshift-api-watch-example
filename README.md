@@ -6,6 +6,7 @@ Example using kubernetes-client to implement an OpenShift client.
 
 ```sh
 oc adm policy add-scc-to-user anyuid -z default
+oc adm policy add-cluster-role-to-user cluster-admin -z default
 export registry=$(oc get svc docker-registry -n default  -o jsonpath='{.spec.clusterIP}')
 oc new-build https://github.com/debianmaster/openshift-api-watch-example --name=watch-img
 oc new-build https://github.com/debianmaster/simple-scoreboard --name=dash-img
