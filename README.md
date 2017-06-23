@@ -7,9 +7,8 @@ Example using kubernetes-client to implement an OpenShift client.
 ```sh
 oc adm policy add-scc-to-user anyuid -z default
 export registry=$(oc get svc docker-registry -n default  -o jsonpath='{.spec.clusterIP}')
-cp ~/.kube/config config
-oc new-build https://github.com/debianmaster/openshift-api-watch-example --name=watch
-oc new-build https://github.com/debianmaster/simple-scoreboard --name=dash
+oc new-build https://github.com/debianmaster/openshift-api-watch-example --name=watch-img
+oc new-build https://github.com/debianmaster/simple-scoreboard --name=dash-img
 oc new-app watch-img --name=watch
 
 oc patch dc watch --patch='
@@ -38,6 +37,4 @@ oc patch dc watch --patch='
     }
   }
 }'
-oc create cm kubeconfig --from-file=config
-oc volume dc/watch --add  -m /root/.kube/ -t configmap --configmap-name=kubeconfig
 ```
