@@ -28,6 +28,8 @@ var scores=[];
 var nsVsusers=[];
 
 function addScore(key,val,type){
+	console.log("All",key,val,type);
+	console.log("----",nsVsusers,scores);
 	if(key!=undefined){
 		for(k in scores){
 			if(scores[k].name==key){//&& asserts[type].indexof(val)!=-1
@@ -35,6 +37,9 @@ function addScore(key,val,type){
 				io.emit('message',scores);
 		         }
 	         }
+	}
+	else{
+	     console.log("Exception",key);
 	}
 }
 //Deployment Configs
