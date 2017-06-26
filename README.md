@@ -40,6 +40,8 @@ oc patch dc watch --patch='
     }
   }
 }'
-
+oc expose svc watch --port=8080
 oc expose svc watch --port=8081 --name=watch-api
+open http://$(oc get routes watch-api -o jsonpath={.spec.host})/
+
 ```
