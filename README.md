@@ -5,6 +5,7 @@ Example using kubernetes-client to implement an OpenShift client.
 ## Using
 
 ```sh
+oc project default
 oc adm policy add-scc-to-user anyuid -z default
 oc adm policy add-cluster-role-to-user cluster-admin -z default
 export registry=$(oc get svc docker-registry -n default  -o jsonpath='{.spec.clusterIP}')
@@ -18,7 +19,7 @@ oc patch dc watch --patch='
       "spec": {
         "containers": [
           { "name" : "dash", 
-            "image": "${registry}:5000/ci/dash-img:latest"
+            "image": "'${registry}':5000/default/dash-img:latest"
           }
         ], 
         "triggers": [
@@ -38,4 +39,6 @@ oc patch dc watch --patch='
     }
   }
 }'
+
+oc expose svc watch --port=8081 --name=watch-api
 ```
