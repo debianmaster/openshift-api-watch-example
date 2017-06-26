@@ -11,6 +11,7 @@ oc adm policy add-cluster-role-to-user cluster-admin -z default
 export registry=$(oc get svc docker-registry -n default  -o jsonpath='{.spec.clusterIP}')
 oc new-build https://github.com/debianmaster/openshift-api-watch-example --name=watch-img
 oc new-build https://github.com/debianmaster/simple-scoreboard --name=dash-img
+sleep 60
 oc new-app watch-img --name=watch
 
 oc patch dc watch --patch='
